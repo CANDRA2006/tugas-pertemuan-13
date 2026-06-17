@@ -10,12 +10,11 @@
 
 ---
 
-## Bulk Delete
-![BULK DELETE](img/Bulk_Delete.png)
-![BULK DELETE](img/Bulk_Delete2.png)
+## Create Anggota
+![CREATE ANGGOTA](img/Create_Anggota.png)
 
-## Export Buku ke CSV 
-![EXPORT KE CSV](imgs/Export_CSV.png)
+## Export Anggota
+![EXPORT KE EXCEL](imgs/Export_Excel.png)
 
-## vallidation Rules
-![VALIDATION RULES](imgs/Validation_Rules.png)
+## Advanced Search
+![Advanced Search](imgs/Adavanced_Search.png)
