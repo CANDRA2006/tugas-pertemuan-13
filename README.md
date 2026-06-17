@@ -14,7 +14,7 @@
 ![CREATE ANGGOTA](img/Create_Anggota.png)
 
 ## Export Anggota
-![EXPORT KE EXCEL](imgs/Export_Excel.png)
+![EXPORT KE EXCEL](img/Export_Excel.png)
 
 ## Advanced Search
-![Advanced Search](imgs/Adavanced_Search.png)
+![Advanced Search](img/Adavanced_Search.png)
