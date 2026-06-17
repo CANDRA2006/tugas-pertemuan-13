@@ -17,4 +17,4 @@
 ![EXPORT KE EXCEL](img/Export_Excel.png)
 
 ## Advanced Search
-![Advanced Search](img/Adavanced_Search.png)
+![Advanced Search](img/Advanced_Search.png)
