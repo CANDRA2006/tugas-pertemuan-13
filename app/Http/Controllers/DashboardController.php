@@ -2,55 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Anggota;
+use App\Models\Buku;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $bukus = collect([
-            (object)[
-                'id' => 1,
-                'judul' => 'Laravel 13',
-                'pengarang' => 'Budi',
-                'stok' => 10,
-                'created_at' => now()
-            ],
-            (object)[
-                'id' => 2,
-                'judul' => 'PHP Modern',
-                'pengarang' => 'Andi',
-                'stok' => 0,
-                'created_at' => now()->subDay()
-            ],
-        ]);
+        $totalBuku = Buku::count();
+        $bukuTersedia = Buku::where('stok', '>', 0)->count();
+        $bukuHabis = Buku::where('stok', 0)->count();
 
-        $anggotas = collect([
-            (object)[
-                'id' => 1,
-                'nama' => 'Budi Santoso',
-                'status' => 'Aktif',
-                'created_at' => now()
-            ],
-            (object)[
-                'id' => 2,
-                'nama' => 'Dewi Lestari',
-                'status' => 'Nonaktif',
-                'created_at' => now()->subDay()
-            ],
-        ]);
+        $totalAnggota = Anggota::count();
+        $anggotaAktif = Anggota::where('status', 'Aktif')->count();
+        $anggotaNonaktif = Anggota::where('status', 'Nonaktif')->count();
 
-        return view('dashboard.dashboard', [
-            'totalBuku' => $bukus->count(),
-            'bukuTersedia' => $bukus->where('stok', '>', 0)->count(),
-            'bukuHabis' => $bukus->where('stok', 0)->count(),
+        $bukuTerbaru = Buku::latest()->take(5)->get();
+        $anggotaTerbaru = Anggota::latest()->take(5)->get();
 
-            'totalAnggota' => $anggotas->count(),
-            'anggotaAktif' => $anggotas->where('status', 'Aktif')->count(),
-            'anggotaNonaktif' => $anggotas->where('status', 'Nonaktif')->count(),
-
-            'bukuTerbaru' => $bukus->take(5),
-            'anggotaTerbaru' => $anggotas->take(5),
-        ]);
+        return view('dashboard', compact(
+            'totalBuku',
+            'bukuTersedia',
+            'bukuHabis',
+            'totalAnggota',
+            'anggotaAktif',
+            'anggotaNonaktif',
+            'bukuTerbaru',
+            'anggotaTerbaru'
+        ));
     }
 }

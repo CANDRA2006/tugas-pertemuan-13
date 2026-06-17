@@ -4,84 +4,115 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 
 class Anggota extends Model
 {
     use HasFactory;
 
+    /**
+     * Nama tabel yang digunakan oleh model ini.
+     *
+     * @var string
+     */
     protected $table = 'anggota';
 
+    /**
+     * Kolom yang dapat diisi secara mass assignment.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'kode',
+        'kode_anggota',
         'nama',
         'email',
         'telepon',
         'alamat',
         'tanggal_lahir',
         'jenis_kelamin',
+        'pekerjaan',
+        'tanggal_daftar',
         'status',
     ];
 
+    /**
+     * Tipe casting untuk atribut.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'tanggal_lahir' => 'date',
-        'created_at'    => 'datetime',
+        'tanggal_daftar' => 'date',
     ];
 
-    // ACCESSORS
     /**
-     * @return string
+     * Accessor untuk menghitung umur.
+     */
+    public function getUmurAttribute(): int
+    {
+        return Carbon::parse($this->tanggal_lahir)->age;
+    }
+
+    /**
+     * Accessor untuk lama menjadi anggota (dalam hari).
+     */
+    public function getLamaAnggotaAttribute(): int
+    {
+        return Carbon::parse($this->tanggal_daftar)->diffInDays(now());
+    }
+
+    /**
+     * Scope untuk filter anggota aktif.
+     */
+    public function scopeAktif($query)
+    {
+        return $query->where('status', 'Aktif');
+    }
+
+    /**
+     * Scope untuk filter berdasarkan jenis kelamin.
+     */
+    public function scopeJenisKelamin($query, $jenisKelamin)
+    {
+        return $query->where('jenis_kelamin', $jenisKelamin);
+    }
+
+    /**
+     * Accessor untuk status badge.
      */
     public function getStatusBadgeAttribute(): string
     {
-        if ($this->status === 'Aktif') {
-            return '<span class="badge bg-success">Aktif</span>';
+        if (strtolower($this->status) === 'aktif') {
+            return '<span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Aktif</span>';
         }
 
-        return '<span class="badge bg-secondary">Nonaktif</span>';
+        return '<span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded">Nonaktif</span>';
     }
 
     /**
-     * Accessor: Kategori usia anggota berdasarkan tanggal lahir
-     * @return string
+     * Accessor kategori usia.
      */
     public function getKategoriUsiaAttribute(): string
     {
-        if (! $this->tanggal_lahir) {
-            return 'Tidak Diketahui';
-        }
-
-        $umur = Carbon::parse($this->tanggal_lahir)->age;
+        $umur = $this->umur;
 
         if ($umur < 20) {
             return 'Remaja';
-        } elseif ($umur <= 50) {
-            return 'Dewasa';
-        } else {
-            return 'Senior';
         }
-    }
 
-    // SCOPES
-    /**
-     * Scope: Filter anggota berdasarkan jenis kelamin
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  string  $jk  'L' untuk Laki-laki, 'P' untuk Perempuan
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeJenisKelamin($query, string $jk)
-    {
-        return $query->where('jenis_kelamin', $jk);
+        if ($umur >= 20 && $umur <= 50) {
+            return 'Dewasa';
+        }
+
+        return 'Senior';
     }
 
     /**
-     * Scope: Filter anggota yang terdaftar di bulan dan tahun ini.
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * Scope untuk anggota terdaftar pada bulan ini (tahun dan bulan sekarang).
      */
     public function scopeTerdaftarBulanIni($query)
     {
-        return $query->whereYear('created_at', Carbon::now()->year)
-                     ->whereMonth('created_at', Carbon::now()->month);
+        return $query->whereYear('tanggal_daftar', now()->year)
+            ->whereMonth('tanggal_daftar', now()->month);
     }
 }

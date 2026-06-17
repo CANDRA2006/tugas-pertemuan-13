@@ -1,7 +1,7 @@
 @extends('layouts.app')
-
+ 
 @section('title', $anggota->nama)
-
+ 
 @section('content')
 <div class="row">
     <div class="col-12 mb-3">
@@ -14,7 +14,7 @@
         </nav>
     </div>
 </div>
-
+ 
 <div class="row">
     <div class="col-md-8">
         <div class="card">
@@ -42,7 +42,7 @@
                         </span>
                     @endif
                 </div>
-
+                
                 <table class="table table-borderless">
                     <tr>
                         <td width="200" class="fw-bold">
@@ -72,7 +72,7 @@
                         <td class="fw-bold">
                             <i class="bi bi-calendar text-success"></i> Tanggal Lahir
                         </td>
-                        <td>: {{ $anggota->tanggal_lahir->format('d m y') }} ({{ $anggota->umur }} tahun)</td>
+                        <td>: {{ $anggota->tanggal_lahir->format('d F Y') }} ({{ $anggota->umur }} tahun)</td>
                     </tr>
                     <tr>
                         <td class="fw-bold">
@@ -93,22 +93,22 @@
                         <td>: {{ $anggota->tanggal_daftar->format('d F Y') }} ({{ $anggota->lama_anggota }} hari)</td>
                     </tr>
                 </table>
-
+                
                 <hr>
                 <div class="row text-muted small">
                     <div class="col-md-6">
-                        <i class="bi bi-clock"></i>
+                        <i class="bi bi-clock"></i> 
                         Ditambahkan: {{ $anggota->created_at->format('d M Y H:i') }}
                     </div>
                     <div class="col-md-6 text-end">
-                        <i class="bi bi-clock-history"></i>
+                        <i class="bi bi-clock-history"></i> 
                         Terakhir Update: {{ $anggota->updated_at->format('d M Y H:i') }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    
     <div class="col-md-4">
         <div class="card mb-3">
             <div class="card-header bg-secondary text-white">
@@ -123,6 +123,14 @@
                 <a href="{{ route('anggota.index') }}" class="btn btn-outline-success">
                     <i class="bi bi-arrow-left"></i> Kembali
                 </a>
+                <hr>
+                <form action="{{ route('anggota.destroy', $anggota->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger w-100">
+                        <i class="bi bi-trash"></i> Hapus Anggota
+                    </button>
+                </form>
             </div>
         </div>
     </div>

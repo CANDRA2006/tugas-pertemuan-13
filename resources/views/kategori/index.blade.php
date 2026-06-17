@@ -9,7 +9,7 @@
             <h2>
                 <i class="bi bi-list"></i> Daftar Kategori Buku
             </h2>
-            <form class="d-flex" action="{{ route('kategori.search') }}" method="GET">
+            <form class="d-flex" method="GET" onsubmit="event.preventDefault(); var keyword = this.keyword.value.trim(); if (keyword) { window.location.href = '{{ url('/kategori/search') }}/' + encodeURIComponent(keyword); }">
                 <input class="form-control me-2" type="search" name="keyword" placeholder="Cari kategori..." aria-label="Search">
                 <button class="btn btn-primary" type="submit">
                     <i class="bi bi-search"></i> Cari
@@ -34,7 +34,7 @@
                     </p>
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="badge bg-info text-dark" style="font-size: 1rem;">
-                            <i class="bi bi-book"></i>
+                            <i class="bi bi-book"></i> 
                             {{ $kategori['jumlah_buku'] }} Buku
                         </span>
                     </div>
@@ -63,7 +63,7 @@
                     <i class="bi bi-bar-chart"></i> Statistik
                 </h6>
                 <p class="mb-0">
-                    <strong>Total Kategori:</strong> {{ count($kategori_list) }} |
+                    <strong>Total Kategori:</strong> {{ count($kategori_list) }} | 
                     <strong>Total Buku:</strong> {{ array_sum(array_column($kategori_list, 'jumlah_buku')) }}
                 </p>
             </div>

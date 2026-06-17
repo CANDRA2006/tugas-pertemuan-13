@@ -1,7 +1,7 @@
 @extends('layouts.app')
-
+ 
 @section('title', $buku->judul)
-
+ 
 @section('content')
 <div class="row">
     {{-- Breadcrumb --}}
@@ -15,7 +15,7 @@
         </nav>
     </div>
 </div>
-
+ 
 <div class="row">
     {{-- Kolom Kiri: Info Buku --}}
     <div class="col-md-8">
@@ -29,14 +29,14 @@
             <div class="card-body">
                 {{-- Judul --}}
                 <h2 class="mb-3">{{ $buku->judul }}</h2>
-
+                
                 {{-- Badge Kategori --}}
                 <div class="mb-3">
                     <span class="badge bg-{{ $buku->kategori == 'Programming' ? 'primary' : ($buku->kategori == 'Database' ? 'success' : ($buku->kategori == 'Web Design' ? 'info' : ($buku->kategori == 'Networking' ? 'warning' : 'danger'))) }} fs-6">
                         <i class="bi bi-tag"></i> {{ $buku->kategori }}
                     </span>
                 </div>
-
+                
                 {{-- Informasi Detail --}}
                 <table class="table table-borderless">
                     <tr>
@@ -101,7 +101,7 @@
                         </td>
                     </tr>
                 </table>
-
+                
                 {{-- Deskripsi --}}
                 @if ($buku->deskripsi)
                     <hr>
@@ -113,23 +113,23 @@
                         <i class="bi bi-info-circle"></i> Tidak ada deskripsi untuk buku ini
                     </p>
                 @endif
-
+                
                 {{-- Timestamps --}}
                 <hr>
                 <div class="row text-muted small">
                     <div class="col-md-6">
-                        <i class="bi bi-clock"></i>
+                        <i class="bi bi-clock"></i> 
                         Ditambahkan: {{ $buku->created_at->format('d M Y H:i') }}
                     </div>
                     <div class="col-md-6 text-end">
-                        <i class="bi bi-clock-history"></i>
+                        <i class="bi bi-clock-history"></i> 
                         Terakhir Update: {{ $buku->updated_at->format('d M Y H:i') }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    
     {{-- Kolom Kanan: Actions & Info Tambahan --}}
     <div class="col-md-4">
         {{-- Card Actions --}}
@@ -143,7 +143,7 @@
                 <a href="{{ route('buku.edit', $buku->id) }}" class="btn btn-warning">
                     <i class="bi bi-pencil"></i> Edit Buku
                 </a>
-
+                
                 @if ($buku->stok > 0)
                     <button class="btn btn-success">
                         <i class="bi bi-cart-plus"></i> Pinjam Buku
@@ -153,23 +153,55 @@
                         <i class="bi bi-x-circle"></i> Stok Habis
                     </button>
                 @endif
-
+                
                 <a href="{{ route('buku.index') }}" class="btn btn-outline-primary">
                     <i class="bi bi-arrow-left"></i> Kembali
                 </a>
-
+                
                 <hr>
-
-                <form action="{{ route('buku.destroy', $buku->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
+                
+                {{-- Delete Button dengan SweetAlert --}}
+                <form action="{{ route('buku.destroy', $buku->id) }}" 
+                    method="POST" 
+                    class="d-inline delete-form">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger w-100">
-                        <i class="bi bi-trash"></i> Hapus Buku
+                    <button type="button" class="btn btn-sm btn-danger w-100 btn-delete" 
+                            data-judul="{{ $buku->judul }}">
+                        <i class="bi bi-trash"></i> Hapus
                     </button>
                 </form>
+                
+                @push('scripts')
+                <script>
+                    // SweetAlert confirmation untuk delete
+                    document.querySelectorAll('.btn-delete').forEach(button => {
+                        button.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            const form = this.closest('form');
+                            const judul = this.getAttribute('data-judul');
+                            
+                            Swal.fire({
+                                title: 'Konfirmasi Hapus',
+                                text: `Apakah Anda yakin ingin menghapus buku "${judul}"?`,
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#d33',
+                                cancelButtonColor: '#3085d6',
+                                confirmButtonText: 'Ya, Hapus!',
+                                cancelButtonText: 'Batal'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    form.submit();
+                                }
+                            });
+                        });
+                    });
+                </script>
+                @endpush
             </div>
         </div>
-
+        
         {{-- Card Status Stok --}}
         <div class="card mb-3">
             <div class="card-header bg-info text-white">
@@ -199,7 +231,7 @@
                 @endif
             </div>
         </div>
-
+        
         {{-- Card Buku Serupa --}}
         <div class="card">
             <div class="card-header bg-dark text-white">
@@ -214,7 +246,7 @@
                                                   ->take(3)
                                                   ->get();
                 @endphp
-
+                
                 @forelse ($bukuSerupa as $item)
                     <div class="mb-3">
                         <a href="{{ route('buku.show', $item->id) }}" class="text-decoration-none">
@@ -236,4 +268,3 @@
     </div>
 </div>
 @endsection
-

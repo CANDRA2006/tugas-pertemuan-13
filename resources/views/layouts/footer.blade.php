@@ -4,7 +4,7 @@
             <div class="col-md-6">
                 <h5><i class="bi bi-book-fill text-primary"></i> Sistem Perpustakaan</h5>
                 <p class="text-muted mb-0">
-                    Sistem Manajemen Perpustakaan menggunakan Laravel 12
+                    Sistem Manajemen Perpustakaan menggunakan Laravel 13
                 </p>
             </div>
             <div class="col-md-3">
@@ -26,8 +26,8 @@
         <div class="row border-top pt-3">
             <div class="col text-center text-muted small">
                 <p class="mb-0">
-                    &copy; {{ date('Y') }} Sistem Perpustakaan.
-                    Built with <i class="bi bi-heart-fill text-danger"></i> using Laravel 12.
+                    &copy; {{ date('Y') }} Sistem Perpustakaan. 
+                    Built with <i class="bi bi-heart-fill text-danger"></i> using Laravel 13.
                 </p>
             </div>
         </div>

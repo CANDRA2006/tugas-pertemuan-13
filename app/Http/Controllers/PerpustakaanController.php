@@ -38,16 +38,16 @@ class PerpustakaanController extends Controller
             [
                 'id' => 4,
                 'judul' => 'Web Design',
-                'pengarang' => 'Malik Budiman',
-                'harga' => 65000,
-                'stok' => 10
+                'pengarang' => 'Dedi Santoso',
+                'harga' => 85000,
+                'stok' => 8
             ],
             [
                 'id' => 5,
                 'judul' => 'JavaScript Modern',
-                'pengarang' => 'Ahmad Wijaya',
+                'pengarang' => 'Rina Wijaya',
                 'harga' => 80000,
-                'stok' => 2
+                'stok' => 12
             ]
         ];
         

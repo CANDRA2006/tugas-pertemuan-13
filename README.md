@@ -10,4 +10,12 @@
 
 ---
 
+## Bulk Delete
+![BULK DELETE](img/Bulk_Delete.png)
+![BULK DELETE](img/Bulk_Delete2.png)
 
+## Export Buku ke CSV 
+![EXPORT KE CSV](imgs/Export_CSV.png)
+
+## vallidation Rules
+![VALIDATION RULES](imgs/Validation_Rules.png)
